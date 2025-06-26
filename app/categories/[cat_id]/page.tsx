@@ -1,16 +1,19 @@
+// app/categories/[cat_id]/page.tsx
+import { getArticlesByCategory } from "@/lib/service/articleService"; // 获取文章服务
 import ArticleManager from "@/components/business/ArticleManager";
 
 interface Props {
-    params: { cat_id: string }; // 参数名必须和文件夹名一致
+    params: { cat_id: string }; // 从 params 中获取 cat_id
 }
 
-export default function CategoryDetailPage({ params }: Props) {
-    const catId = Number(params.cat_id); // string → number
-
+export default async function ArticleByCategoryPage({ params }: Props) {
+    const catId = Number(params.cat_id); // 转换为数字
+    // 异步获取数据
+    // const { cat_name, articles } = await getArticlesByCategory(catId); // 服务端获取数据
+    const articles = await getArticlesByCategory(catId);
     return (
         <main className="max-w-4xl mx-auto p-6">
-            {/* <h1 className="text-3xl font-bold mb-4">分类 #{catId} 的文章管理</h1> */}
-            <ArticleManager catId={catId} />
+            <ArticleManager catId={catId} initialArticles={articles} /> {/* 传递初始数据 */}
         </main>
     );
 }
